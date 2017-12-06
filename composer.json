@@ -1,0 +1,51 @@
+{
+    "name": "thecodingmachine/laravel-server-monitor-plugin-notification-by-host",
+    "description": "Monitor servers plugin to send notification by host",
+    "keywords": [
+        "spatie",
+        "laravel-server-monitor",
+        "plugin",
+		"notification"
+    ],
+    "homepage": "https://github.com/thecodingmachine/laravel-server-monitor-plugin-notification-by-host",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marc Teyssier",
+            "email": "m.teyssier@thecodingmachine.com",
+            "homepage": "https://www.thecodingmachine.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "spatie/laravel-server-monitor": "^1.2"
+    },
+    "require-dev": {
+        "mockery/mockery": "^0.9.8",
+        "orchestra/testbench": "^3.4.5",
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "TheCodingMachine\\ServerMonitorPluginNotificationByHost\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TheCodingMachine\\ServerMonitorPluginNotificationByHost\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TheCodingMachine\\ServerMonitorPluginNotificationByHost\\ServerMonitorPluginNotificationByHostServiceProvider"
+            ]
+        }
+    }
+}
