@@ -19,10 +19,8 @@ class AddNotificationByHost extends BaseCommand
         $host = $this->hostChoice();
         $notificationsParameters = $this->channelChoice();
         $notificationsParameters = $this->configuration($host, $notificationsParameters);
-
         $host->setCustomProperty('notifications', $notificationsParameters);
         $host->save();
-
         $this->info("Host notification `{$host->name}` saved");
     }
 
@@ -35,30 +33,26 @@ class AddNotificationByHost extends BaseCommand
         return $hostList;
     }
 
-    protected function determineChecks(array $chosenChecks, array $checkNames): array
-    {
-        if (in_array(static::$allChecksLabel, $chosenChecks)) {
-            return $this->getAllCheckNames();
-        }
-
-        return array_diff($chosenChecks, [static::$allChecksLabel]);
-    }
-
-    protected function getAllCheckNames(): array
-    {
-        return array_keys(config('server-monitor.checks'));
-    }
-
     private function askConfiguration($notifications) {
         $configure = [];
         foreach ($notifications as $channel) {
             $attributes = config('server-monitor-plugin-notification-by-host.notifications.channels.'.$channel);
-            foreach ($attributes as $attribute => $type) {
-                config('server-monitor.notifications.channels.'.$channel);
-                $configure[$channel][$attribute] = $this->ask("For channel `$channel` attribute `$attribute`?".($type == 'array'?" (values separate by ,)":""), false);
-                if($type == 'array') {
-                    $configure[$channel][$attribute] = explode(',', $configure[$channel][$attribute]);
+            if($attributes) {
+                foreach ($attributes as $attribute => $type) {
+                    $configure[$channel][$attribute] = $this->ask("For channel `$channel` attribute `$attribute`?".($type == 'array'?" (values separate by ,)":""), false);
+                    if($type == 'array') {
+                        $configure[$channel][$attribute] = explode(',', $configure[$channel][$attribute]);
+                    }
+                    if(!$configure[$channel][$attribute]) {
+                        unset($configure[$channel][$attribute]);
+                    }
                 }
+                if(!$configure[$channel]) {
+                    unset($configure[$channel]);
+                }
+            }
+            else {
+                $this->error("No configuration for ".$channel." in server-monitor-plugin-notification-by-host.php file configuration");
             }
         }
         return $configure;
@@ -90,7 +84,6 @@ class AddNotificationByHost extends BaseCommand
         foreach (config('server-monitor-plugin-notification-by-host.notifications.channels') as $channel => $config) {
             $notifications[] = $channel;
         }
-
         $notificationsParameters = [];
         foreach(config('server-monitor.notifications.notifications') as $class => $notification) {
             $this->line("Notification for ".$class);
@@ -115,11 +108,15 @@ class AddNotificationByHost extends BaseCommand
 
             $notificationsUsed = [];
             foreach ($notificationsParameters as $check) {
-                $notificationsUsed = array_unique(array_merge($notificationsUsed, $check['channels']), SORT_REGULAR);
+                if(isset($check['channels']) && $check['channels']) {
+                    $notificationsUsed = array_unique(array_merge($notificationsUsed, $check['channels']), SORT_REGULAR);
+                }
             }
 
-            $configure = $this->askConfiguration($notificationsUsed);
-            $notificationsParameters['configuration'] = $configure;
+            if($notificationsUsed) {
+                $configure = $this->askConfiguration($notificationsUsed);
+                $notificationsParameters['configuration'] = $configure;
+            }
         }
         return $notificationsParameters;
     }

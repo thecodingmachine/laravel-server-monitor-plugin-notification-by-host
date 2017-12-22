@@ -7,11 +7,10 @@ class Notifiable extends \Spatie\ServerMonitor\Notifications\Notifiable
 {
     public function routeNotificationForMail(): ?array
     {
-        return parent::routeNotificationForMail();
-
         if($notification = $this->getSpecificConfiguration('mail')) {
             return $notification;
         }
+        return parent::routeNotificationForMail();
     }
 
     public function routeNotificationForSlack(): ?string

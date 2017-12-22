@@ -1,11 +1,11 @@
 <?php
 
-namespace TheCodingMachine\ServerMonitorPluginNotificationbyHost;
+namespace TheCodingMachine\ServerMonitorPluginNotificationByHost;
 
 use Spatie\Blink\Blink;
 use Illuminate\Support\ServiceProvider;
-use Spatie\ServerMonitor\Commands\ListNotifications;
 use TheCodingMachine\ServerMonitorPluginNotificationByHost\Commands\AddNotificationByHost;
+use TheCodingMachine\ServerMonitorPluginNotificationByHost\Commands\ListNotifications;
 
 class ServerMonitorPluginNotificationByHostServiceProvider extends ServiceProvider
 {
