@@ -19,8 +19,6 @@ trait BaseNotificationTrait
         if(!$notifications) {
             return config('server-monitor.notifications.notifications.'.static::class);
         }
-        var_dump($notifications);
-        var_dump(static::class);
         if(isset($notifications[static::class]) && isset($notifications[static::class]['channels'])) {
             return $notifications[static::class]['channels'];
         }

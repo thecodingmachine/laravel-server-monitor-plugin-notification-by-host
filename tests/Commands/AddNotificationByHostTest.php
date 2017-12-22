@@ -26,7 +26,6 @@ class AddNotificationByHostTest extends TestCase
             }
             public function choice($question, array $choices, $default = null, $attempts = null, $multiple = null)
             {
-                echo $question."\n";
                 $result = $this->answers[$this->answer];
                 if($multiple) {
                     if(!is_array($this->answers[$this->answer])) {
@@ -38,12 +37,10 @@ class AddNotificationByHostTest extends TestCase
             }
             public function confirm($question, $default = false)
             {
-                echo $question."\n";
                 return $this->answers[$this->answer ++];
             }
 
             public function ask($question, $default = null) {
-                echo $question."\n";
                 return $this->answers[$this->answer ++];
             }
         };

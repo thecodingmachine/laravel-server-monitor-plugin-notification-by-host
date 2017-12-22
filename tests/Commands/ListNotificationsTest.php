@@ -61,10 +61,6 @@ class ListNotificationsTest extends TestCase
 
         $this->seeInConsoleOutput(['There are no hosts configured']);
 
-//        var_dump($this->getArtisanOutput());
-        //        $this->dontSeeInConsoleOutput(['wrong-host', 'wrong-check']);
-        //
-        //        $this->seeInConsoleOutput(['correct-check', 'correct-host']);
     }
 
     /** @test */
