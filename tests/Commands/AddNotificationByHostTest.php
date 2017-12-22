@@ -116,5 +116,6 @@ class AddNotificationByHostTest extends TestCase
 
         $this->command->answers([false, "test", 'test', 'No channel', 'No channel', 'No channel']);
         Artisan::call('server-monitor:add-notification-host');
+        $this->seeInConsoleOutput('No configuration for');
     }
 }
